@@ -1,11 +1,11 @@
 Websites
 
-Website name: google.com
-Website URL: https://google.com/registration/
-Login name: Main account
+Website name: fl.ru
+Website URL: https://fl.ru/registration/
+Login name:
 Login: test@gmail.com
 Password: _SomePassword_
-Comment: Test Website 1
+Comment:
 
 ---
 
@@ -14,7 +14,7 @@ Website URL: https://google.com/registration/
 Login name: Foreign Account
 Login: test2@gmail.com
 Password: somepassword
-Comment: Test Website 2
+Comment:
 
 ---
 
@@ -23,7 +23,7 @@ Website URL: https://volga-it.org/personal/
 Login name:
 Login: test@gmail.com
 Password: _some_pass_
-Comment: Test Website 3
+Comment:
 
 ---
 
@@ -32,7 +32,7 @@ Applications
 Application: JetBrains JetService Wrapper
 Login name:
 Login: MyName
-Password: 42а8а23а82
+Password: 39238fhh2f2
 Comment:
 
 ---

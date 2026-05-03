@@ -262,6 +262,13 @@ def test_export_entry_before_section_header_raises() -> None:
 
 
 @pytest.mark.unit
+def test_export_handles_utf8_bom_prefix() -> None:
+    result = KpmText("﻿" + _SINGLE_WEBSITE).export()
+    assert len(result.websites) == 1
+    assert result.websites[0].website_name == "example.com"
+
+
+@pytest.mark.unit
 def test_kpm_text_is_frozen() -> None:
     kpm = KpmText("x")
     with pytest.raises(FrozenInstanceError):

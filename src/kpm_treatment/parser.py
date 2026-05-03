@@ -154,7 +154,7 @@ class _SectionedText:
             "Notes": [],
         }
         current = ""
-        for raw_block in self._raw.split("\n---\n"):
+        for raw_block in self._raw.lstrip("﻿").split("\n---\n"):
             block = raw_block.strip()
             if not block:
                 continue
