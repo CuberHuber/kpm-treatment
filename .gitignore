@@ -1,0 +1,38 @@
+# Claude Code
+.claude/*.local.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# uv
+.python-version
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Testing & coverage
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+
+# Type checking
+.mypy_cache/
+
+# Ruff
+.ruff_cache/
+
+# IDE
+.idea/
+.vscode/
