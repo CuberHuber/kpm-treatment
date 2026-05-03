@@ -153,12 +153,90 @@ wheels = [
 ]
 
 [[package]]
+name = "eo-styleguide"
+version = "0.1.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flake8" },
+    { name = "flake8-final" },
+    { name = "flake8-no-private-methods" },
+    { name = "flake8-one-class" },
+    { name = "flake8-override" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0a/c7/90bdba7574e2a29f792299552eb357947c0dc33e88d1b254aaacb8820a73/eo_styleguide-0.1.1.tar.gz", hash = "sha256:8c681325a7c2a4f7f8ee2d41ba5f06fff93cfaa23698d26de52f2b3a5c2bd2a8", size = 11960 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ea/58/3032e9f694cddc86dfaf59f325ebc0ca447c796951572f92509f6d2b879f/eo_styleguide-0.1.1-py3-none-any.whl", hash = "sha256:96760b1f3727b151ee55cce514d286478ff4468d906b1f11b2b0c593691173a0", size = 23709 },
+]
+
+[[package]]
 name = "filelock"
 version = "3.29.0"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/b5/fe/997687a931ab51049acce6fa1f23e8f01216374ea81374ddee763c493db5/filelock-3.29.0.tar.gz", hash = "sha256:69974355e960702e789734cb4871f884ea6fe50bd8404051a3530bc07809cf90", size = 57571 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/81/47/dd9a212ef6e343a6857485ffe25bba537304f1913bdbed446a23f7f592e1/filelock-3.29.0-py3-none-any.whl", hash = "sha256:96f5f6344709aa1572bbf631c640e4ebeeb519e08da902c39a001882f30ac258", size = 39812 },
+]
+
+[[package]]
+name = "flake8"
+version = "7.3.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "mccabe" },
+    { name = "pycodestyle" },
+    { name = "pyflakes" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9b/af/fbfe3c4b5a657d79e5c47a2827a362f9e1b763336a52f926126aa6dc7123/flake8-7.3.0.tar.gz", hash = "sha256:fe044858146b9fc69b551a4b490d69cf960fcb78ad1edcb84e7fbb1b4a8e3872", size = 48326 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/9f/56/13ab06b4f93ca7cac71078fbe37fcea175d3216f31f85c3168a6bbd0bb9a/flake8-7.3.0-py2.py3-none-any.whl", hash = "sha256:b9696257b9ce8beb888cdbe31cf885c90d31928fe202be0889a7cdafad32f01e", size = 57922 },
+]
+
+[[package]]
+name = "flake8-final"
+version = "0.0.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flake8" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a5/e4/487558ab03ca54c5f8b277d959fd07ece944fa44384cfd0908e5a1a328d6/flake8_final-0.0.3.tar.gz", hash = "sha256:652c95616199aa4f1bf4ccb60c2cd944797e12dc21b0343f12534e24465b3c43", size = 3292 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a7/7b/1d426852147f4734fede23f2560da7b1715cb52c9df4e4340cdca07e890a/flake8_final-0.0.3-py3-none-any.whl", hash = "sha256:48d375a071c5d0193b5d698100d5751896337e9596ec541886c2895be7f19027", size = 6595 },
+]
+
+[[package]]
+name = "flake8-no-private-methods"
+version = "0.0.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flake8" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/9c/73/ef916bd82c6c0f0749595349034a4d03738062c14851146c366ab546c247/flake8_no_private_methods-0.0.1.tar.gz", hash = "sha256:7cf9bbd191a879e3ebd9654f0eb97f04a02a3da60754e545320008bcc4f73d64", size = 3960 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8a/97/78c4fdc8927251dc91e9398cf729500429c7e3d87801d8b7743ceef2cad4/flake8_no_private_methods-0.0.1-py3-none-any.whl", hash = "sha256:224bccd71b245b0069c694b95d267aede04eb757614b2ecd644fc5418e3f10c3", size = 6963 },
+]
+
+[[package]]
+name = "flake8-one-class"
+version = "0.0.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flake8" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a7/42/36e0a53368178c849715bef9f07754d46133969ae71ac2464d9a1bcb140b/flake8_one_class-0.0.1.tar.gz", hash = "sha256:15673b02671b4889144d889e8da14dac5ac7af1f33f5633ab411739a58aefe4f", size = 3380 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b7/bc/e491dfcfbffb49ee7f6e66f9be6b36cdec77102fed4184c9d83b522811e6/flake8_one_class-0.0.1-py3-none-any.whl", hash = "sha256:3c47e5ba03516891af5b77c5e231772bdf4c37ab2ce14919caacb35451e0b862", size = 7723 },
+]
+
+[[package]]
+name = "flake8-override"
+version = "0.1.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "flake8" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0e/f5/7316c0a58ab0f81cd5e228891970a8acdbfe4a96e1af435376d960aa66c0/flake8_override-0.1.0.tar.gz", hash = "sha256:ed95f36b1aa96c7cfc6c8f1b76f32287403491f003a443d9f2ccc03d19cd7313", size = 3695 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ab/b6/22c2bdd16bba777345c3292d53b6e3267fa276d121d51becbc956044ec65/flake8_override-0.1.0-py3-none-any.whl", hash = "sha256:3e3d7b9e90b71923ae539fd7fb2b8c4f7254a0835ccc932ac34af361691cd15f", size = 6735 },
 ]
 
 [[package]]
@@ -187,6 +265,8 @@ source = { editable = "." }
 [package.dev-dependencies]
 dev = [
     { name = "bandit" },
+    { name = "eo-styleguide" },
+    { name = "flake8" },
     { name = "mypy" },
     { name = "pre-commit" },
     { name = "pytest" },
@@ -199,6 +279,8 @@ dev = [
 [package.metadata.requires-dev]
 dev = [
     { name = "bandit", specifier = ">=1.7" },
+    { name = "eo-styleguide", specifier = ">=0.1.1" },
+    { name = "flake8", specifier = ">=7.1" },
     { name = "mypy", specifier = ">=1.10" },
     { name = "pre-commit", specifier = ">=3.7" },
     { name = "pytest", specifier = ">=8.0" },
@@ -289,6 +371,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/5b/f5/4ec618ed16cc4f8fb3b701563655a69816155e79e24a17b651541804721d/markdown_it_py-4.0.0.tar.gz", hash = "sha256:cb0a2b4aa34f932c007117b194e945bd74e0ec24133ceb5bac59009cda1cb9f3", size = 73070 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/94/54/e7d793b573f298e1c9013b8c4dade17d481164aa517d1d7148619c2cedbf/markdown_it_py-4.0.0-py3-none-any.whl", hash = "sha256:87327c59b172c5011896038353a81343b6754500a08cd7a4973bb48c6d578147", size = 87321 },
+]
+
+[[package]]
+name = "mccabe"
+version = "0.7.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/e7/ff/0ffefdcac38932a54d2b5eed4e0ba8a408f215002cd178ad1df0f2806ff8/mccabe-0.7.0.tar.gz", hash = "sha256:348e0240c33b60bbdf4e523192ef919f28cb2c3d7d5c7794f74009290f236325", size = 9658 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/27/1a/1f68f9ba0c207934b35b86a8ca3aad8395a3d6dd7921c0686e23853ff5a9/mccabe-0.7.0-py2.py3-none-any.whl", hash = "sha256:6c2d30ab6be0e4a46919781807b4f0d834ebdd6c6e3dca0bda5a15f863427b6e", size = 7350 },
 ]
 
 [[package]]
@@ -418,6 +509,24 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/8e/22/2de9408ac81acbb8a7d05d4cc064a152ccf33b3d480ebe0cd292153db239/pre_commit-4.6.0.tar.gz", hash = "sha256:718d2208cef53fdc38206e40524a6d4d9576d103eb16f0fec11c875e7716e9d9", size = 198525 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/80/6e/4b28b62ecb6aae56769c34a8ff1d661473ec1e9519e2d5f8b2c150086b26/pre_commit-4.6.0-py2.py3-none-any.whl", hash = "sha256:e2cf246f7299edcabcf15f9b0571fdce06058527f0a06535068a86d38089f29b", size = 226472 },
+]
+
+[[package]]
+name = "pycodestyle"
+version = "2.14.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/11/e0/abfd2a0d2efe47670df87f3e3a0e2edda42f055053c85361f19c0e2c1ca8/pycodestyle-2.14.0.tar.gz", hash = "sha256:c4b5b517d278089ff9d0abdec919cd97262a3367449ea1c8b49b91529167b783", size = 39472 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d7/27/a58ddaf8c588a3ef080db9d0b7e0b97215cee3a45df74f3a94dbbf5c893a/pycodestyle-2.14.0-py2.py3-none-any.whl", hash = "sha256:dd6bf7cb4ee77f8e016f9c8e74a35ddd9f67e1d5fd4184d86c3b98e07099f42d", size = 31594 },
+]
+
+[[package]]
+name = "pyflakes"
+version = "3.4.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/45/dc/fd034dc20b4b264b3d015808458391acbf9df40b1e54750ef175d39180b1/pyflakes-3.4.0.tar.gz", hash = "sha256:b24f96fafb7d2ab0ec5075b7350b3d2d2218eab42003821c06344973d3ea2f58", size = 64669 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c2/2f/81d580a0fb83baeb066698975cb14a618bdbed7720678566f1b046a95fe8/pyflakes-3.4.0-py2.py3-none-any.whl", hash = "sha256:f742a7dbd0d9cb9ea41e9a24a918996e8170c799fa528688d40dd582c8265f4f", size = 63551 },
 ]
 
 [[package]]

@@ -1,0 +1,13 @@
+[flake8]
+max-line-length = 88
+# Only report EO-specific codes; E/F/W linting is handled by ruff
+select = PEO,FIN
+# PEO300: frozen dataclass fields are public by design — intentional EO/Python
+#         tradeoff: @dataclass value objects expose fields as attributes, not
+#         methods. Encapsulation is enforced by immutability (frozen=True), not
+#         by hiding fields.
+# OVR100: @override — Protocol conformance is verified statically by mypy via
+#         type-annotated assignment; runtime @override is redundant.
+# FOC100: one class per module — related domain value objects (entry types,
+#         private block helpers) are cohesive and belong in the same module.
+extend-ignore = PEO300,OVR100,FOC100

@@ -1,0 +1,103 @@
+Websites
+
+Website name: google.com
+Website URL: https://google.com/registration/
+Login name: Main account
+Login: test@gmail.com
+Password: _SomePassword_
+Comment: Test Website 1
+
+---
+
+Website name: google.com
+Website URL: https://google.com/registration/
+Login name: Foreign Account
+Login: test2@gmail.com
+Password: somepassword
+Comment: Test Website 2
+
+---
+
+Website name: volga-it.org
+Website URL: https://volga-it.org/personal/
+Login name:
+Login: test@gmail.com
+Password: _some_pass_
+Comment: Test Website 3
+
+---
+
+Applications
+
+Application: JetBrains JetService Wrapper
+Login name:
+Login: MyName
+Password: 42а8а23а82
+Comment:
+
+---
+
+Application: Сервисы Google Play
+Login name: Аккаунт
+Login: test3@gmail.com
+Password: asapassword
+Comment:
+
+---
+
+Application: Arc.app
+Login name: main
+Login: Omygod@icloud.com
+Password: fsjhdfspoh2j5g85_f8sdf
+Comment:
+
+---
+
+Other Accounts
+
+Account name: Some Account
+Login name:
+Login: Host@Windows11
+Password: 75832
+Comment:
+
+---
+
+Account name: Аккаунт
+Login name:
+Login: Kek@Windows
+Password: 3934
+Comment:
+
+---
+
+Notes
+
+Name: Запасной код Steam
+Text: Steam Critical Code: AHAHAHAH
+
+---
+
+Name: Новая заметка
+Text: Lol
+
+---
+
+Name: mylord
+Text: [url]
+google.com/lol
+
+[admin]
+admin
+AdmIn
+
+[token]
+
+
+---
+
+Name: AnyType Main Vault key
+Text: lol kek lol omy
+
+---
+
