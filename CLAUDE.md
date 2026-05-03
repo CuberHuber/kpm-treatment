@@ -2,17 +2,18 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project
+## Project context
 
 **kpm-treatment** — tooling for working with Kaspersky Password Manager (KPM) data/exports.
 
-Language: Python 3.11+ (supports each subsequent major version via CI matrix).
+Language: Python 3.11+; CI runs on 3.11, 3.12, and 3.13.
 
 ## Commands
 
 ```bash
-# Install dependencies
+# Install dependencies and the git hooks
 uv sync
+uv run pre-commit install
 
 # Run all tests
 uv run pytest
@@ -46,20 +47,31 @@ uv run pre-commit run --all-files
 |------|---------|
 | `uv` | Package and venv management |
 | `pytest` | Test runner |
-| `ruff` | Linting and formatting (replaces black + isort + flake8) |
+| `ruff` | Linting and formatting (replaces black and isort; flake8 still runs separately for EO codes) |
 | `mypy` | Static type checking |
 | `bandit` | Security scanning |
-| `flake8` + `eo-styleguide` | EO principle enforcement (`FIN100`, `PEO*` codes) |
+| `flake8` + `eo-styleguide` | EO principle enforcement (`FIN100`, `PEO*` codes), plus `flake8-final`, `flake8-no-private-methods`, `flake8-one-class`, `flake8-override` |
 | `pre-commit` | Git hook enforcement |
 
 ### pre-commit hooks (`.pre-commit-config.yaml`)
 
-Required hooks: `ruff`, `ruff-format`, `mypy`, `bandit`, `flake8` (eo-styleguide). Run `pre-commit install` after cloning.
+The configured hooks fall into three groups.
+File hygiene runs `trailing-whitespace`, `end-of-file-fixer`,
+  `check-yaml`, and `check-added-large-files`.
+Style and analysis run `ruff` (with `--fix`),
+  `ruff-format`, `mypy`, `bandit`,
+  and `flake8` with the EO plugin set.
+Commit-message validation runs `conventional-pre-commit`
+  on the `commit-msg` stage,
+  accepting `feat`, `fix`, `perf`, `chore`,
+  `docs`, `refactor`, `test`, and `ci`.
+Run `uv run pre-commit install` after cloning
+  to wire every group into git.
 
-## Code Style
+## Code style
 
-Every rule is enforced by `ruff`, `mypy`, `bandit`, or `flake8`
-  (eo-styleguide).
+Every rule is enforced by `ruff`, `mypy`, `bandit`,
+  or `flake8` (eo-styleguide).
 Fix the root cause; never silence a tool.
 
 ### Immutability
@@ -118,21 +130,22 @@ with open(path, encoding="utf-8") as fh:
 - All tests under `tests/`, mirroring `src/` layout
 - Mark tests with `@pytest.mark.unit` or `@pytest.mark.integration`
 - No mocking of internal objects — use fakes/test doubles
-- Each test exercises one behavior
+- Each test exercises one behaviour
 
 ## GitHub Actions
 
-CI matrix runs on Python **3.11, 3.12, 3.13**. Three workflows:
+CI matrix runs on Python **3.11, 3.12, 3.13**. Four workflows:
 
-1. **test** — `pytest --cov` on each matrix version
-2. **compliance** — `ruff check`, `ruff format --check`, `mypy`, `bandit`
-3. **pre-commit** — `pre-commit run --all-files`
+1. **Test** — `pytest --cov` on each matrix version
+2. **Compliance** — `ruff check`, `ruff format --check`, `mypy`, `bandit`
+3. **Pre-commit** — `pre-commit run --all-files`
+4. **Release** — runs on `v*` tag push; rebuilds, publishes to PyPI via Trusted Publishing, and creates a GitHub Release
 
-## Elegant Objects Principles
+## Elegant Objects principles
 
 This project follows [Elegant Objects](https://www.elegantobjects.org/) (Yegor Bugayenko):
 
-- **No null** — raise exceptions or use `Optional` explicitly; never return `None` silently
+- **No null** — raise exceptions immediately; never return `None` silently to signal failure
 - **No static methods or utility classes** — behaviour belongs inside objects
 - **Immutable objects** — never mutate state after construction; return new instances
 - **No getters/setters** — objects expose behaviour, not data; method names describe what they do, not what they return

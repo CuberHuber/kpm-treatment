@@ -2,7 +2,7 @@
 
 Kaspersky Password Manager (KPM) treatment.
 
-## Background
+## Why this exists
 
 I have been using KPM for years,
   but I have never transferred data from it to other tools.
@@ -80,6 +80,9 @@ print(DEFAULT_REGISTRY.find("kpm-import").of(export).render())
 print(KpmImportFormat(_soft=True).of(export).render())
 ```
 
+The full public API is `kpm_treatment.__all__`;
+  see `src/kpm_treatment/__init__.py` for the complete export list.
+
 ## Release
 
 Releases are cut by pushing a `v*` tag.
@@ -92,8 +95,9 @@ The [`Release` workflow][release-yml] runs on tag push,
 
 ```bash
 # Bump the version in pyproject.toml, commit, then tag
-git tag v0.1.0
-git push origin v0.1.0
+# (use the version you just wrote, e.g. v0.2.0)
+git tag vX.Y.Z
+git push origin vX.Y.Z
 ```
 
 The workflow refuses to publish if the tag does not match
@@ -113,11 +117,6 @@ Before the first release a maintainer must:
    - Environment: `pypi`
 3. Create a GitHub Environment named `pypi` in the repository
    so the publish job's deployment can be reviewed and protected.
-
-[PyPI]: https://pypi.org/project/kpm-treatment/
-[PyPI Trusted Publishing]: https://docs.pypi.org/trusted-publishers/
-[Trusted Publisher]: https://docs.pypi.org/trusted-publishers/adding-a-publisher/
-[release-yml]: .github/workflows/release.yml
 
 ## Architecture
 
@@ -270,6 +269,10 @@ A programmer adding a new flag edits `Cli.run()`'s
   [argparse] setup and the dispatch in the same method;
   `main()` itself stays a four-line constructor call.
 
+## License
+
+`kpm-treatment` is released under the [MIT License](LICENSE).
+
 [argparse]: https://docs.python.org/3/library/argparse.html
 [bitwarden]: https://bitwarden.com
 [eo]: https://www.elegantobjects.org/
@@ -279,5 +282,9 @@ A programmer adding a new flag edits `Cli.run()`'s
 [official forum]: https://forum.kaspersky.com/topic/kpm-import-csv-6262/
 [pre-commit]: https://pre-commit.com/
 [proto]: https://docs.python.org/3/library/typing.html#typing.Protocol
+[PyPI]: https://pypi.org/project/kpm-treatment/
+[PyPI Trusted Publishing]: https://docs.pypi.org/trusted-publishers/
+[release-yml]: .github/workflows/release.yml
 [stringio]: https://docs.python.org/3/library/io.html#io.StringIO
+[Trusted Publisher]: https://docs.pypi.org/trusted-publishers/adding-a-publisher/
 [uv]: https://docs.astral.sh/uv/
