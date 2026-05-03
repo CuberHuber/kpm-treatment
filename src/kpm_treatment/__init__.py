@@ -10,6 +10,7 @@ from kpm_treatment.formats import (
     FormatMismatch,
     FormatNotFound,
     FormatRegistry,
+    FormatUnrepresentable,
     KpmImportFormat,
     Lintable,
 )
@@ -33,6 +34,7 @@ __all__ = [
     "FormatMismatch",
     "FormatNotFound",
     "FormatRegistry",
+    "FormatUnrepresentable",
     "KpmExport",
     "KpmImportFormat",
     "KpmText",

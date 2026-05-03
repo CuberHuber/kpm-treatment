@@ -25,3 +25,15 @@ class FormatMalformed(FormatError):
 @final
 class FormatNotFound(FormatError):
     """Raised when a registry lookup cannot resolve a name or input."""
+
+
+@final
+class FormatUnrepresentable(FormatError):
+    """Raised when a format cannot represent the given export.
+
+    Distinct from ``FormatMismatch`` (which is about *input* shape) and
+    from ``FormatMalformed`` (which is about *input* integrity): this
+    one is raised when an otherwise-valid ``KpmExport`` carries content
+    that the requested format does not cover, e.g. a KPM-import CSV
+    asked to render application or note entries.
+    """

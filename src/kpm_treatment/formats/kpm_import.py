@@ -4,7 +4,11 @@ from dataclasses import dataclass
 from typing import final
 
 from kpm_treatment.formats.csv_export import CsvExport
-from kpm_treatment.formats.exceptions import FormatMalformed, FormatMismatch
+from kpm_treatment.formats.exceptions import (
+    FormatMalformed,
+    FormatMismatch,
+    FormatUnrepresentable,
+)
 from kpm_treatment.formats.protocols import Exportable
 from kpm_treatment.models import KpmExport
 
@@ -13,12 +17,11 @@ _KPM_SECTION_HEADERS = frozenset(
 )
 
 _KPM_IMPORT_HEADER = (
-    "Website name",
-    "Website URL",
-    "Login name",
-    "Login",
+    "Account",
+    "Login Name",
     "Password",
-    "Comment",
+    "Web Site",
+    "Comments",
 )
 
 
@@ -33,15 +36,14 @@ class _KpmImportDoc:
         rows = tuple(
             (
                 w.website_name,
-                w.website_url,
-                w.login_name or "",
                 w.login,
                 w.password,
+                w.website_url,
                 w.comment or "",
             )
             for w in self._source.websites
         )
-        return CsvExport(_KPM_IMPORT_HEADER, rows).render()
+        return CsvExport(_KPM_IMPORT_HEADER, rows, _quote_all=True).render()
 
 
 @final
@@ -54,11 +56,11 @@ class KpmImportFormat:
 
     def description(self) -> str:
         return (
-            "Kaspersky Password Manager import CSV. Six columns: "
-            "Website name, Website URL, Login name, Login, Password, Comment. "
-            "Only website credentials are emitted; applications, other "
-            "accounts, and notes are skipped because the KPM CSV import "
-            "path accepts website credentials only."
+            "Kaspersky Password Manager import CSV. Five fully-quoted "
+            "columns: Account, Login Name, Password, Web Site, Comments. "
+            "Renders website credentials only; an export carrying any "
+            "application, other-account, or note entry is rejected, "
+            "since the KPM CSV import path accepts websites only."
         )
 
     def link(self) -> str:
@@ -79,4 +81,11 @@ class KpmImportFormat:
             )
 
     def of(self, export: KpmExport) -> Exportable:
+        if export.applications or export.other_accounts or export.notes:
+            raise FormatUnrepresentable(
+                "kpm-import renders website credentials only; export "
+                f"carries {len(export.applications)} application(s), "
+                f"{len(export.other_accounts)} other-account(s), and "
+                f"{len(export.notes)} note(s)"
+            )
         return _KpmImportDoc(export)

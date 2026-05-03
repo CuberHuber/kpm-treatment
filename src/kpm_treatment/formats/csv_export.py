@@ -13,10 +13,14 @@ class CsvExport:
 
     _header: tuple[str, ...]
     _rows: tuple[tuple[str, ...], ...]
+    _quote_all: bool = False
 
     def render(self) -> str:
         buffer = io.StringIO()
-        writer = csv.writer(buffer, quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
+        if self._quote_all:
+            writer = csv.writer(buffer, quoting=csv.QUOTE_ALL, lineterminator="\n")
+        else:
+            writer = csv.writer(buffer, quoting=csv.QUOTE_MINIMAL, lineterminator="\n")
         writer.writerow(self._header)
         for row in self._rows:
             writer.writerow(row)

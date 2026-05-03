@@ -4,6 +4,7 @@ from kpm_treatment.formats.exceptions import (
     FormatMalformed,
     FormatMismatch,
     FormatNotFound,
+    FormatUnrepresentable,
 )
 from kpm_treatment.formats.kpm_import import KpmImportFormat
 from kpm_treatment.formats.protocols import Describable, Exportable, Lintable
@@ -19,6 +20,7 @@ __all__ = [
     "FormatMismatch",
     "FormatNotFound",
     "FormatRegistry",
+    "FormatUnrepresentable",
     "KpmImportFormat",
     "Lintable",
 ]

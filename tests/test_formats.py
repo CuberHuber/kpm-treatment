@@ -13,6 +13,7 @@ from kpm_treatment.formats import (
     FormatMismatch,
     FormatNotFound,
     FormatRegistry,
+    FormatUnrepresentable,
     KpmImportFormat,
     Lintable,
 )
@@ -25,7 +26,7 @@ from kpm_treatment.models import (
 )
 from kpm_treatment.parser import KpmText
 
-_HEADER_LINE = "Website name,Website URL,Login name,Login,Password,Comment"
+_HEADER_LINE = '"Account","Login Name","Password","Web Site","Comments"'
 
 
 def _empty_export() -> KpmExport:
@@ -173,6 +174,7 @@ def test_format_exceptions_share_base() -> None:
     assert issubclass(FormatMismatch, FormatError)
     assert issubclass(FormatMalformed, FormatError)
     assert issubclass(FormatNotFound, FormatError)
+    assert issubclass(FormatUnrepresentable, FormatError)
 
 
 # ---------------------------------------------------------------------------
@@ -206,12 +208,12 @@ def test_kpm_import_format_renders_website_row() -> None:
     lines = KpmImportFormat().of(export).render().splitlines()
     assert lines[0] == _HEADER_LINE
     assert lines[1] == (
-        "example.com,https://example.com,Main,user@example.com,secret,a note"
+        '"example.com","user@example.com","secret","https://example.com","a note"'
     )
 
 
 @pytest.mark.unit
-def test_kpm_import_format_blank_optional_fields_become_empty_strings() -> None:
+def test_kpm_import_format_blank_optional_comment_becomes_empty_string() -> None:
     export = KpmExport(
         websites=(
             WebsiteEntry(
@@ -228,11 +230,32 @@ def test_kpm_import_format_blank_optional_fields_become_empty_strings() -> None:
         notes=(),
     )
     lines = KpmImportFormat().of(export).render().splitlines()
-    assert lines[1] == "t.com,https://t.com,,t@t.com,tp,"
+    assert lines[1] == '"t.com","t@t.com","tp","https://t.com",""'
 
 
 @pytest.mark.unit
-def test_kpm_import_format_skips_applications() -> None:
+def test_kpm_import_format_ignores_login_name_field() -> None:
+    export = KpmExport(
+        websites=(
+            WebsiteEntry(
+                website_name="x.com",
+                website_url="https://x.com",
+                login="real@x.com",
+                password="pw",
+                login_name="should-not-appear",
+                comment=None,
+            ),
+        ),
+        applications=(),
+        other_accounts=(),
+        notes=(),
+    )
+    rendered = KpmImportFormat().of(export).render()
+    assert "should-not-appear" not in rendered
+
+
+@pytest.mark.unit
+def test_kpm_import_format_rejects_applications() -> None:
     export = KpmExport(
         websites=(),
         applications=(
@@ -247,11 +270,12 @@ def test_kpm_import_format_skips_applications() -> None:
         other_accounts=(),
         notes=(),
     )
-    assert KpmImportFormat().of(export).render() == f"{_HEADER_LINE}\n"
+    with pytest.raises(FormatUnrepresentable):
+        KpmImportFormat().of(export)
 
 
 @pytest.mark.unit
-def test_kpm_import_format_skips_other_accounts() -> None:
+def test_kpm_import_format_rejects_other_accounts() -> None:
     export = KpmExport(
         websites=(),
         applications=(),
@@ -266,39 +290,38 @@ def test_kpm_import_format_skips_other_accounts() -> None:
         ),
         notes=(),
     )
-    assert KpmImportFormat().of(export).render() == f"{_HEADER_LINE}\n"
+    with pytest.raises(FormatUnrepresentable):
+        KpmImportFormat().of(export)
 
 
 @pytest.mark.unit
-def test_kpm_import_format_skips_notes() -> None:
+def test_kpm_import_format_rejects_notes() -> None:
     export = KpmExport(
         websites=(),
         applications=(),
         other_accounts=(),
         notes=(NoteEntry(name="My Note", text="anything"),),
     )
-    assert KpmImportFormat().of(export).render() == f"{_HEADER_LINE}\n"
+    with pytest.raises(FormatUnrepresentable):
+        KpmImportFormat().of(export)
 
 
 @pytest.mark.unit
-def test_kpm_import_format_renders_only_websites_when_mixed() -> None:
+def test_kpm_import_format_rejects_mixed_export_even_with_websites() -> None:
     export = KpmExport(
         websites=(WebsiteEntry("w.com", "https://w.com", "w@w.com", "wp", None, None),),
         applications=(ApplicationEntry("App", "appuser", "ap", None, None),),
         other_accounts=(OtherAccountEntry("Acc", "acc@host", "99", None, None),),
         notes=(NoteEntry(name="n", text="t"),),
     )
-    lines = KpmImportFormat().of(export).render().splitlines()
-    assert lines == [
-        _HEADER_LINE,
-        "w.com,https://w.com,,w@w.com,wp,",
-    ]
+    with pytest.raises(FormatUnrepresentable):
+        KpmImportFormat().of(export)
 
 
 @pytest.mark.unit
 def test_kpm_import_doc_satisfies_exportable() -> None:
     exportable: Exportable = KpmImportFormat().of(_empty_export())
-    assert exportable.render().startswith("Website name,")
+    assert exportable.render().startswith('"Account",')
 
 
 @pytest.mark.unit
@@ -362,15 +385,25 @@ def test_registry_is_frozen() -> None:
 
 
 @pytest.mark.integration
-def test_kpm_import_format_renders_real_sample(samples_dir: Path) -> None:
+def test_kpm_import_format_rejects_real_mixed_sample(samples_dir: Path) -> None:
     text = (samples_dir / "kpm-export.txt").read_text(encoding="utf-8")
-    rendered = KpmImportFormat().of(KpmText(text).export()).render()
-    lines = rendered.splitlines()
-    assert lines[0] == _HEADER_LINE
-    # Sample contains 3 websites; the other 9 entries (apps/accounts/notes)
-    # must be skipped, so the output is exactly header + 3 rows.
-    assert len(lines) == 4
-    assert lines[1].startswith("google.com,https://google.com/registration/,")
+    with pytest.raises(FormatUnrepresentable):
+        KpmImportFormat().of(KpmText(text).export())
+
+
+@pytest.mark.integration
+def test_kpm_import_format_renders_websites_only_sample(samples_dir: Path) -> None:
+    text = (samples_dir / "kpm-export.txt").read_text(encoding="utf-8")
+    parsed = KpmText(text).export()
+    websites_only = KpmExport(
+        websites=parsed.websites,
+        applications=(),
+        other_accounts=(),
+        notes=(),
+    )
+    expected = (samples_dir / "kpm-import.csv").read_text(encoding="utf-8")
+    rendered = KpmImportFormat().of(websites_only).render()
+    assert rendered.splitlines() == expected.splitlines()
 
 
 @pytest.mark.integration
