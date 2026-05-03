@@ -43,6 +43,7 @@ fail_under = 80
 [tool.ruff]
 target-version = "py311"
 line-length = 88
+extend-exclude = ["samples"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "C4", "ANN"]
@@ -52,7 +53,9 @@ ignore = []
 python_version = "3.11"
 strict = true
 files = ["src"]
+exclude = ["samples/"]
 
 [tool.bandit]
 targets = ["src"]
+exclude_dirs = ["samples"]
 skips = []

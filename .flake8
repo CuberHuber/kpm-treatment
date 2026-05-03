@@ -1,5 +1,6 @@
 [flake8]
 max-line-length = 88
+exclude = .git,__pycache__,.venv,build,dist,samples
 # Only report EO-specific codes; E/F/W linting is handled by ruff
 select = PEO,FIN
 # PEO300: frozen dataclass fields are public by design — intentional EO/Python

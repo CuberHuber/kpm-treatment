@@ -102,4 +102,3 @@ The tool surfaces every structural problem loudly at parse time,
 [final]: https://docs.python.org/3/library/typing.html#typing.final
 [eo]: https://www.elegantobjects.org/
 [bitwarden]: https://bitwarden.com
-
