@@ -80,6 +80,45 @@ print(DEFAULT_REGISTRY.find("kpm-import").of(export).render())
 print(KpmImportFormat(_soft=True).of(export).render())
 ```
 
+## Release
+
+Releases are cut by pushing a `v*` tag.
+The [`Release` workflow][release-yml] runs on tag push,
+  rebuilds and tests the package,
+  publishes the wheel and sdist to [PyPI],
+  and creates a GitHub Release with the artifacts attached.
+
+### Cut a release
+
+```bash
+# Bump the version in pyproject.toml, commit, then tag
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+The workflow refuses to publish if the tag does not match
+  the `project.version` in `pyproject.toml`.
+
+### One-time PyPI setup
+
+The workflow uses [PyPI Trusted Publishing] (OIDC) —
+  no API tokens are stored as repository secrets.
+Before the first release a maintainer must:
+
+1. Register the project on PyPI as `kpm-treatment`.
+2. Add a [Trusted Publisher] entry on PyPI with:
+   - Owner: `CuberHuber`
+   - Repository: `kpm-treatment`
+   - Workflow: `release.yml`
+   - Environment: `pypi`
+3. Create a GitHub Environment named `pypi` in the repository
+   so the publish job's deployment can be reviewed and protected.
+
+[PyPI]: https://pypi.org/project/kpm-treatment/
+[PyPI Trusted Publishing]: https://docs.pypi.org/trusted-publishers/
+[Trusted Publisher]: https://docs.pypi.org/trusted-publishers/adding-a-publisher/
+[release-yml]: .github/workflows/release.yml
+
 ## Architecture
 
 The tool reads
