@@ -51,16 +51,26 @@ class _KpmImportDoc:
 class KpmImportFormat:
     """The KPM-native CSV import format for website credentials."""
 
+    _soft: bool = False
+
     def name(self) -> str:
         return "kpm-import"
 
     def description(self) -> str:
-        return (
+        base = (
             "Kaspersky Password Manager import CSV. Five fully-quoted "
-            "columns: Account, Login Name, Password, Web Site, Comments. "
-            "Renders website credentials only; an export carrying any "
-            "application, other-account, or note entry is rejected, "
-            "since the KPM CSV import path accepts websites only."
+            "columns: Account, Login Name, Password, Web Site, Comments."
+        )
+        if self._soft:
+            return (
+                f"{base} Renders website credentials only; any "
+                "application, other-account, or note entry in the export "
+                "is silently dropped (soft mode)."
+            )
+        return (
+            f"{base} Renders website credentials only; an export "
+            "carrying any application, other-account, or note entry is "
+            "rejected, since the KPM CSV import path accepts websites only."
         )
 
     def link(self) -> str:
@@ -81,6 +91,8 @@ class KpmImportFormat:
             )
 
     def of(self, export: KpmExport) -> Exportable:
+        if self._soft:
+            return _KpmImportDoc(export)
         if export.applications or export.other_accounts or export.notes:
             raise FormatUnrepresentable(
                 "kpm-import renders website credentials only; export "

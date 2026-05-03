@@ -9,6 +9,9 @@ authors = [
 requires-python = ">=3.11"
 dependencies = []
 
+[project.scripts]
+kpm-treatment = "kpm_treatment.main:main"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

@@ -319,6 +319,76 @@ def test_kpm_import_format_rejects_mixed_export_even_with_websites() -> None:
 
 
 @pytest.mark.unit
+def test_kpm_import_format_soft_mode_drops_applications() -> None:
+    export = KpmExport(
+        websites=(
+            WebsiteEntry(
+                website_name="w.com",
+                website_url="https://w.com",
+                login="w@w.com",
+                password="wp",
+                login_name=None,
+                comment=None,
+            ),
+        ),
+        applications=(ApplicationEntry("App", "appuser", "ap", None, None),),
+        other_accounts=(),
+        notes=(),
+    )
+    rendered = KpmImportFormat(_soft=True).of(export).render()
+    lines = rendered.splitlines()
+    assert lines[0] == _HEADER_LINE
+    assert lines[1] == '"w.com","w@w.com","wp","https://w.com",""'
+    assert "App" not in rendered
+    assert "appuser" not in rendered
+
+
+@pytest.mark.unit
+def test_kpm_import_format_soft_mode_drops_other_accounts_and_notes() -> None:
+    export = KpmExport(
+        websites=(),
+        applications=(),
+        other_accounts=(OtherAccountEntry("Win", "user@host", "1234", None, None),),
+        notes=(NoteEntry(name="My Note", text="anything"),),
+    )
+    rendered = KpmImportFormat(_soft=True).of(export).render()
+    assert rendered == f"{_HEADER_LINE}\n"
+
+
+@pytest.mark.unit
+def test_kpm_import_format_soft_mode_renders_websites_from_mixed_export() -> None:
+    export = KpmExport(
+        websites=(WebsiteEntry("w.com", "https://w.com", "w@w.com", "wp", None, None),),
+        applications=(ApplicationEntry("App", "appuser", "ap", None, None),),
+        other_accounts=(OtherAccountEntry("Acc", "acc@host", "99", None, None),),
+        notes=(NoteEntry(name="n", text="t"),),
+    )
+    rendered = KpmImportFormat(_soft=True).of(export).render()
+    lines = rendered.splitlines()
+    assert lines[0] == _HEADER_LINE
+    assert lines[1] == '"w.com","w@w.com","wp","https://w.com",""'
+    assert len(lines) == 2
+
+
+@pytest.mark.unit
+def test_kpm_import_format_soft_mode_description_mentions_soft() -> None:
+    desc = KpmImportFormat(_soft=True).description()
+    assert "soft mode" in desc.lower()
+
+
+@pytest.mark.unit
+def test_kpm_import_format_default_is_strict() -> None:
+    export = KpmExport(
+        websites=(),
+        applications=(ApplicationEntry("App", "u", "p", None, None),),
+        other_accounts=(),
+        notes=(),
+    )
+    with pytest.raises(FormatUnrepresentable):
+        KpmImportFormat().of(export)
+
+
+@pytest.mark.unit
 def test_kpm_import_doc_satisfies_exportable() -> None:
     exportable: Exportable = KpmImportFormat().of(_empty_export())
     assert exportable.render().startswith('"Account",')
