@@ -295,7 +295,7 @@ def test_export_real_kpm_file(samples_dir: Path) -> None:
     assert len(result.applications) == 3
     assert len(result.other_accounts) == 2
     assert len(result.notes) == 4
-    assert result.websites[0].website_name == "google.com"
+    assert result.websites[0].website_name == "fl.ru"
     assert result.websites[2].login_name is None
     assert result.notes[2].name == "mylord"
     assert result.notes[2].is_multiline()
