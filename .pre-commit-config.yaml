@@ -1,5 +1,3 @@
-exclude: ^samples/
-
 repos:
   # Conventional Commits — commit-msg stage
   - repo: https://github.com/compilerla/conventional-pre-commit
@@ -14,7 +12,9 @@ repos:
     rev: v6.0.0
     hooks:
       - id: trailing-whitespace
+        exclude: ^samples/
       - id: end-of-file-fixer
+        exclude: ^samples/
       - id: check-yaml
       - id: check-added-large-files
         args: ["--maxkb=1024"]
