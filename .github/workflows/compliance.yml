@@ -13,3 +13,23 @@ jobs:
       - run: uv run ruff format --check --output-format=github .
       - run: uv run mypy src/
       - run: uv run bandit -r src/
+      - name: Detect-secrets baseline must be fully audited
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          baseline = json.load(open('.secrets.baseline'))
+          unaudited = [
+              (path, entry)
+              for path, entries in baseline['results'].items()
+              for entry in entries
+              if 'is_secret' not in entry
+          ]
+          total = sum(len(v) for v in baseline['results'].values())
+          print(f'audited={total - len(unaudited)} unaudited={len(unaudited)} total={total}')
+          if unaudited:
+              print('::error::Unaudited entries in .secrets.baseline')
+              print('Run `uv run detect-secrets audit .secrets.baseline` and commit the result.')
+              for path, entry in unaudited[:20]:
+                  print(f'  {path}:{entry["line_number"]} ({entry["type"]})')
+              sys.exit(1)
+          PY

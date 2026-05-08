@@ -1,6 +1,4 @@
-# kpm-treatment
-
-Kaspersky Password Manager (KPM) treatment.
+# Kaspersky Password Manager (KPM) treatment.
 
 ## Why this exists
 
