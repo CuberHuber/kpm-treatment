@@ -28,6 +28,19 @@ A vulnerability in `kpm-treatment` therefore looks like one of these:
 Bugs that do not match the list above belong in the
   [public issue tracker][issues].
 
+## Local secret hygiene
+
+The repository runs `detect-secrets` as a pre-commit hook
+  that blocks any commit introducing a credential pattern
+  the tool recognises,
+  including the KPM export shapes
+  produced by the project's own conversion code.
+The hook is configured in `.pre-commit-config.yaml`,
+  the persistent state lives in `.secrets.baseline`,
+  and the operating procedure
+  (init, update, scan, audit)
+  is documented in the [secrets runbook][runbook].
+
 ## Reporting a vulnerability
 
 Do not open a public GitHub issue for a vulnerability.
@@ -83,3 +96,4 @@ After a fix lands on `main`,
 [gh-private]: https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability
 [issues]: https://github.com/CuberHuber/kpm-treatment/issues
 [PyPI]: https://pypi.org/project/kpm-treatment/
+[runbook]: docs/runbooks/secrets.md

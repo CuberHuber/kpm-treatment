@@ -53,3 +53,14 @@ repos:
           - flake8-no-private-methods==0.0.1
           - flake8-one-class==0.0.1
           - flake8-override==0.1.0
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args:
+          - --baseline
+          - .secrets.baseline
+          - --plugin
+          - tools/detect_secrets_plugins/kpm_password.py
+        exclude: ^\.secrets\.baseline$
