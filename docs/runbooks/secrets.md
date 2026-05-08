@@ -1,12 +1,27 @@
 # Secrets Detection Runbook
 
 Operational steps for `detect-secrets` in this repository.
-The scanner is wired into `pre-commit` and uses a custom plugin
-at `tools/detect_secrets_plugins/kpm_password.py`
-that recognises Kaspersky Password Manager export formats.
+
+Pre-commit runs the scanner with a custom plugin at
+  `tools/detect_secrets_plugins/kpm_password.py`
+  that recognises Kaspersky Password Manager export formats.
+
+Audit, report, and stats modes run through the wrapper at
+  `tools/detect_secrets_audit.py`,
+  which registers the same plugin into the upstream cache
+  before the audit subcommand looks it up.
+Without the wrapper, `detect-secrets audit` raises
+  `KeyError: 'KPM Export Password'`,
+  because the audit subcommand accepts no `--plugin` flag
+  and primes its built-in plugin mapping before reading the baseline.
+
 The persistent state lives in `.secrets.baseline` (JSON).
 
 All commands run from the repository root.
+
+Routine flows have shortcuts in the top-level `Makefile`;
+  run `make` (or `make help`) to list them.
+Each section below names the matching `make` target under the long form.
 
 ## Init
 
@@ -31,6 +46,8 @@ uv run detect-secrets scan \
 git add .secrets.baseline
 ```
 
+Shortcut: `make scan-init` (does the scan; staging stays manual).
+
 ## Update
 
 Run when the pre-commit hook flags a new line as a secret
@@ -45,6 +62,8 @@ uv run detect-secrets scan \
   --baseline .secrets.baseline
 git add .secrets.baseline
 ```
+
+Shortcut: `make scan-update` (does the merge; staging stays manual).
 
 Commit the baseline change in the same commit as the code change
 that introduced the new finding.
@@ -67,11 +86,15 @@ uv run detect-secrets scan \
   --exclude-files '^\.secrets\.baseline$'
 ```
 
+Shortcut: `make scan`.
+
 Run the configured pre-commit hook against every tracked file:
 
 ```bash
 uv run pre-commit run detect-secrets --all-files
 ```
+
+Shortcut: `make hook`.
 
 Run the hook against specific files only:
 
@@ -89,15 +112,22 @@ uv run detect-secrets scan --string 'Password: hunter2'
 ## Audit
 
 Walk through every entry in the baseline
-and mark each as a real secret or a false positive.
-Audit results turn into the `is_verified` / `is_secret` fields
-that downstream tooling (and `--only-verified` runs) consume.
+  and mark each as a real secret or a false positive.
+Audit results land in the `is_verified` and `is_secret` fields
+  that downstream tooling and `--only-verified` runs consume.
+
+Every audit-mode invocation goes through the wrapper at
+  `tools/detect_secrets_audit.py`,
+  not the bare `detect-secrets` command —
+  see the runbook intro for the reason.
 
 Interactive review:
 
 ```bash
-uv run detect-secrets audit .secrets.baseline
+uv run python tools/detect_secrets_audit.py audit .secrets.baseline
 ```
+
+Shortcut: `make audit`.
 
 Keys during the session:
 
@@ -117,14 +147,18 @@ git commit -m "chore: audit detect-secrets baseline"
 Statistics on audit progress:
 
 ```bash
-uv run detect-secrets audit --stats .secrets.baseline
+uv run python tools/detect_secrets_audit.py audit --stats .secrets.baseline
 ```
+
+Shortcut: `make audit-stats`.
 
 Human-readable report of all findings:
 
 ```bash
-uv run detect-secrets audit --report .secrets.baseline
+uv run python tools/detect_secrets_audit.py audit --report .secrets.baseline
 ```
+
+Shortcut: `make audit-report`.
 
 ## When the hook blocks a commit
 
