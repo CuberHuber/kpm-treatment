@@ -28,7 +28,7 @@ jobs:
           print(f'audited={total - len(unaudited)} unaudited={len(unaudited)} total={total}')
           if unaudited:
               print('::error::Unaudited entries in .secrets.baseline')
-              print('Run `uv run detect-secrets audit .secrets.baseline` and commit the result.')
+              print('Run `uv run python tools/detect_secrets_audit.py audit .secrets.baseline` and commit the result.')
               for path, entry in unaudited[:20]:
                   print(f'  {path}:{entry["line_number"]} ({entry["type"]})')
               sys.exit(1)
