@@ -25,5 +25,5 @@ class KpmPasswordDetector(RegexBasedDetector):
 
     denylist: Final[Iterable[Pattern[str]]] = (
         re.compile(r"^Password:\s*(\S+)\s*$"),
-        re.compile(r'^"[^"]*","[^"]*","([^"]+)"'),
+        re.compile(r'^(?!"Account",)"[^"]*","[^"]*","([^"]+)"'),
     )
