@@ -20,7 +20,7 @@ Every claim below cites those columns,
 
 | Repository | Language    | Parsed → rendered | Target format | Delivery                |
 |---|-------------|---|---|-------------------------|
-| [CuberHuber/kpm-treatment][cuberhuber] | Python      | 4 → 1 strict / 3 soft | KPM import CSV (round-trip) | PyPI + source                 |
+| [CuberHuber/kpm-treatment][cuberhuber] | Python      | 4 → 1 (soft drops the other 3) | KPM import CSV (round-trip) | PyPI + source                 |
 | [gokdenizozkan/kpm2csv][goz] | JavaScript  | 4 → 4 | Generic CSV (one file per type) | hosted web + source     |
 | [Draggie306/kaspersky-to-csv][draggie] | Python + JS | 1 → 1 | Chromium-style CSV | hosted web + source     |
 | [MrSuicideParrot/Kaspersky-Password-Manager-to-CSV][parrot] | Python      | 3 → 3 | Generic CSV (`;` delim) / NordPass | source                  |
@@ -121,9 +121,7 @@ The repository can be cloned and run with `uv run kpm-treatment`,
   but it is also published to [PyPI][pypi-pkg] under the same project name,
   installable in one command with `pipx`, `uv tool`, or plain `pip`.
 PyPI delivery is unique in this catalogue:
-  no other tool surveyed —
-  Python or otherwise —
-  has registered itself as a Python distribution.
+  no other Python tool surveyed publishes to PyPI.
 
 ## Code quality and engineering posture
 
@@ -308,9 +306,10 @@ The author's two stated advantages — locality and PyPI —
   are both real and both narrower than they sound.
 Locality separates `kpm-treatment` from the two hosted converters
   but not from the other six local tools.
-PyPI separates `kpm-treatment` from every other Python tool surveyed,
-  and from every tool surveyed in any language,
-  for the install-and-import use case.
+PyPI separates `kpm-treatment` from every other Python tool surveyed
+  on both install and import,
+  and from every tool surveyed in any language
+  on import.
 
 The differentiator that does not appear in the author's stated list
   but that the catalogue makes most clearly visible
