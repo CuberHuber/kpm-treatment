@@ -46,7 +46,9 @@ uv run detect-secrets scan \
 git add .secrets.baseline
 ```
 
-Shortcut: `make scan-init` (does the scan; staging stays manual).
+Shortcut: `make scan-init` (does the scan and normalizes the
+custom-plugin path in the baseline so it stays portable across
+machines; staging stays manual).
 
 ## Update
 
@@ -63,7 +65,9 @@ uv run detect-secrets scan \
 git add .secrets.baseline
 ```
 
-Shortcut: `make scan-update` (does the merge; staging stays manual).
+Shortcut: `make scan-update` (does the merge and normalizes the
+custom-plugin path in the baseline so it stays portable across
+machines; staging stays manual).
 
 Commit the baseline change in the same commit as the code change
 that introduced the new finding.
