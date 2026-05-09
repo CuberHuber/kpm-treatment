@@ -117,8 +117,13 @@ uv run detect-secrets scan --string 'Password: hunter2'
 
 Walk through every entry in the baseline
   and mark each as a real secret or a false positive.
-Audit results land in the `is_verified` and `is_secret` fields
-  that downstream tooling and `--only-verified` runs consume.
+Each interactive decision sets the `is_secret` field on its entry —
+  the CI gate in `.github/workflows/compliance.yml` requires every
+  baseline entry to carry that field, regardless of value, as the
+  marker that an entry has been reviewed.
+The optional `is_verified` field records a separate live-credential
+  verification step and is consumed by
+  `detect-secrets scan --only-verified`.
 
 Every audit-mode invocation goes through the wrapper at
   `tools/detect_secrets_audit.py`,
