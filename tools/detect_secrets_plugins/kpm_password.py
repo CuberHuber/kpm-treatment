@@ -6,7 +6,7 @@ that the bundled detect-secrets plugins cannot recognise:
   * ``.txt`` blocks shaped like ``Password: <value>``
   * ``.csv`` rows where the password is the third quoted column
 
-Loaded via ``detect-secrets scan --custom-plugins``.
+Loaded via ``detect-secrets scan --plugin``.
 """
 
 from __future__ import annotations
