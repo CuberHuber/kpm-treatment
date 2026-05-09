@@ -267,15 +267,41 @@ A programmer adding a new flag edits `Cli.run()`'s
   [argparse] setup and the dispatch in the same method;
   `main()` itself stays a four-line constructor call.
 
+## Comparison with other KPM converters
+
+`kpm-treatment` is one of nine open-source tools
+  that read KPM's TXT export.
+The full catalogue and side-by-side analysis
+  live in [docs/comparison.md][comparison].
+
+`kpm-treatment` is the only tool surveyed
+  that targets KPM's own import CSV,
+  so it is the only converter that solves
+  the KPM → KPM round-trip.
+It is also the only Python tool published to PyPI
+  and the only repository that exposes a typed library API
+  alongside the CLI.
+
+Two competitors solve adjacent cases better.
+Use [gokdenizozkan/kpm2csv][goz] for a hosted page
+  that parses all four KPM sections
+  and emits one generic CSV per section type.
+Use [Draggie306/kaspersky-to-csv][draggie] for the
+  lowest-friction zero-install path
+  to a Chromium-style importer.
+
 ## License
 
 `kpm-treatment` is released under the [MIT License](LICENSE).
 
 [argparse]: https://docs.python.org/3/library/argparse.html
 [bitwarden]: https://bitwarden.com
+[comparison]: docs/comparison.md
+[draggie]: https://github.com/Draggie306/kaspersky-to-csv
 [eo]: https://www.elegantobjects.org/
 [final]: https://docs.python.org/3/library/typing.html#typing.final
 [frozen-dc]: https://docs.python.org/3/library/dataclasses.html#frozen-instances
+[goz]: https://github.com/gokdenizozkan/kpm2csv
 [kpm]: https://www.kaspersky.com/password-manager
 [official forum]: https://forum.kaspersky.com/topic/kpm-import-csv-6262/
 [pre-commit]: https://pre-commit.com/
