@@ -18,6 +18,10 @@ before delegating to ``detect_secrets.main.main``,
 so audit-mode commands can reverse-engineer the secret values
 stored in the baseline.
 
+The wrapper also pre-validates the baseline path arguments,
+because ``detect_secrets.main.main`` unconditionally returns ``0``
+and would otherwise swallow a missing or corrupt baseline silently.
+
 Usage mirrors the upstream CLI:
 
     uv run python tools/detect_secrets_audit.py audit .secrets.baseline
@@ -27,6 +31,7 @@ Usage mirrors the upstream CLI:
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 from typing import Final, final
@@ -49,6 +54,21 @@ class KpmAwareDetectSecrets:
     def run(self) -> int:
         if not _PLUGIN_PATH.is_file():
             raise FileNotFoundError(f"KPM detector module missing at {_PLUGIN_PATH}")
+        for candidate in self._argv:
+            if candidate.startswith("-"):
+                continue
+            path = Path(candidate)
+            if path.suffix != ".baseline" and path.name != ".secrets.baseline":
+                continue
+            if not path.is_file():
+                raise FileNotFoundError(f"Baseline file missing at {path}")
+            with open(path, encoding="utf-8") as fh:
+                try:
+                    json.load(fh)
+                except json.JSONDecodeError as err:
+                    raise ValueError(
+                        f"Baseline at {path} is not valid JSON: {err}"
+                    ) from err
         plugins_initialize.from_file(str(_PLUGIN_PATH))
         return main(self._argv)
 
