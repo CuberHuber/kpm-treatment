@@ -6,9 +6,10 @@
 # accepts `--plugin` natively.
 # See docs/runbooks/secrets.md for the full procedure.
 
-BASELINE := .secrets.baseline
-PLUGIN   := tools/detect_secrets_plugins/kpm_password.py
-WRAPPER  := tools/detect_secrets_audit.py
+BASELINE  := .secrets.baseline
+PLUGIN    := tools/detect_secrets_plugins/kpm_password.py
+WRAPPER   := tools/detect_secrets_audit.py
+NORMALIZE := uv run python tools/normalize_secrets_baseline.py $(BASELINE)
 
 SCAN := uv run detect-secrets scan \
   --plugin $(PLUGIN) \
@@ -44,9 +45,11 @@ scan:
 
 scan-update:
 	$(SCAN) --baseline $(BASELINE)
+	@$(NORMALIZE)
 
 scan-init:
 	$(SCAN) > $(BASELINE)
+	@$(NORMALIZE)
 
 hook:
 	uv run pre-commit run detect-secrets --all-files
